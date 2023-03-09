@@ -18,26 +18,28 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
-mongoose.connect("mongodb://localhost:27017/blogDB", {useNewUrlParser: true});
+mongoose.connect("mongodb://127.0.0.1:27017/blogDB", {useNewUrlParser: true});
 
-const itemsSchema = new Schema({
-  title: String,
+const itemsSchema = {
+  postTitle: String,
   content: String
-})
+}
 const Item = mongoose.model("Item", itemsSchema);
-
-const item1 = new Item({
-  title: "Day 1",
-  content: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nisi incidunt itaque ducimus laudantium eveniet porro repudiandae illum autem iste ipsam ab magnam id in, iusto quia rerum. Inventore ipsum quam, consequuntur totam odio officiis. Et commodi inventore officia reiciendis? Modi, molestiae magnam. Quae debitis qui omnis quas cupiditate ea porro sit tempora sequi magnam odio eveniet voluptatum, consequatur nulla facere minima ut numquam, ratione quisquam. Deserunt magnam repellendus commodi alias, voluptatum praesentium. Libero optio quia sequi officiis, esse tenetur dicta saepe laboriosam hic explicabo, quod illo quasi adipisci sint quaerat ratione impedit necessitatibus inventore minus! Quis sit rem numquam? Ullam optio aliquid dolor quam porro corrupti minima distinctio necessitatibus in eos, veniam fuga iusto quod culpa, placeat vel dolores. Natus molestiae doloribus ipsa! Sint deserunt neque, non voluptas accusantium nostrum, recusandae enim facilis officiis soluta quis assumenda, tempora quo exercitationem suscipit necessitatibus eligendi odio rerum atque sed? Dolore quam totam adipisci, esse non labore magni quae harum molestias rem quibusdam voluptatem nemo in excepturi veritatis debitis suscipit ratione veniam. Voluptates laboriosam quos quia molestiae error rerum animi soluta ipsum unde veritatis, eius quas dolorem officia accusantium itaque voluptatibus adipisci dicta pariatur dolor eaque ex debitis. Maiores porro at eaque sit illo? Hic ipsa mollitia, praesentium molestias maxime illo sapiente id ipsam qui. Voluptatibus, doloribus itaque. Nisi error, corrupti labore placeat nulla recusandae ea consequuntur dicta quo dolores eveniet consectetur non ipsa voluptatem dolore reprehenderit maxime suscipit corporis! Laboriosam eligendi provident temporibus nisi, facere quam praesentium sed dolore, non qui alias voluptatum, ducimus enim minus blanditiis cum recusandae voluptatibus assumenda ut? Nam, perspiciatis soluta amet distinctio unde minima quos dolor aliquid, dignissimos omnis commodi corporis numquam voluptates labore? Quam rerum deserunt deleniti iure quaerat numquam perspiciatis incidunt doloribus debitis! Delectus optio, odio eligendi, eum dolorum laboriosam odit nisi id necessitatibus, voluptatem exercitationem consequuntur. Eveniet ipsam molestias quae error nisi optio ab labore harum, provident temporibus modi voluptatem ex illo, nihil voluptatum ea voluptates sit voluptate. Enim nemo odit amet voluptate, iste earum explicabo accusantium error aliquid quod veritatis magni at similique dicta quos fugiat ipsam deserunt doloribus blanditiis quis consequatur quam eveniet cum quibusdam! Molestiae quis sit enim officiis labore atque delectus ipsa voluptate assumenda dolorem, deserunt, voluptates quia aspernatur consectetur provident beatae accusantium odit. Vel aut, consectetur laborum perferendis inventore sequi eius! Corrupti reprehenderit deleniti dolores sapiente doloribus. Vero hic exercitationem assumenda quidem esse eaque alias adipisci delectus, est molestias."
-})
 
 
 
 app.get("/", function(req,res){
-  res.render("home", {para1:homeStartingContent, posts:posts})
-  
+  Item.find({}).then(function(posts){
+    res.render("home", {para1:homeStartingContent, posts:posts})
+  })
 })
 
+app.get("/signin", function(req,res){
+  res.render("signin",{})
+})
+app.get("/register", function(req,res){
+  res.render("register",{})
+})
 
 app.get("/about", function(req,res){
   res.render("about", {para2:aboutContent})
@@ -63,16 +65,29 @@ app.post("/compose", function(req,res){
 })
 
 
-app.get('/posts/:postName', (req, res) => {
-  const requiredTitle = _.lowerCase(req.params.postName);
-  posts.forEach(function(post){
-    const storedTitle =  _.lowerCase(post.postTitle);
-    const storedContent = post.content;
+app.get('/posts/:postId', (req, res) => {
+
+  const requestedPostId = req.params.postId;
+  Item.findOne({_id: requestedPostId}).then(function(post){
+
+    res.render("post", {
+ 
+      postTitle: post.postTitle,
+ 
+      content: post.content
+ 
+    });
+ 
+  });
+  // const requiredTitle = _.lowerCase(req.params.postName);
+  // posts.forEach(function(post){
+  //   const storedTitle =  _.lowerCase(post.postTitle);
+  //   const storedContent = post.content;
     
-    if(storedTitle === requiredTitle){
-      res.render("post", {heading:storedTitle, para:storedContent})
-    }
-  })
+  //   if(storedTitle === requiredTitle){
+  //     res.render("post", {heading:storedTitle, para:storedContent})
+  //   }
+  // })
 
 })
 app.listen(3000, function() {
