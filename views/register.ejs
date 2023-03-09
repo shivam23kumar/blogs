@@ -29,18 +29,18 @@
         <div class="row d-flex justify-content-center">
           <div class="col-lg-8">
             <h2 class="fw-bold mb-5">Sign up now</h2>
-            <form>
+            <form action="/register" method="post">
               <!-- 2 column grid layout with text inputs for the first and last names -->
               <div class="row">
                 <div class="col-md-6 mb-4">
                   <div class="form-outline">
-                    <input type="text" id="form3Example1" class="form-control" placeholder="Enter Your First Name"/>
+                    <input type="text" name="fName" id="form3Example1" class="form-control" placeholder="Enter Your First Name"/>
                     <!-- <label class="form-label" for="form3Example1">First name</label> -->
                   </div>
                 </div>
                 <div class="col-md-6 mb-4">
                   <div class="form-outline">
-                    <input type="text" id="form3Example2" class="form-control" placeholder="Enter Your Last Name" />
+                    <input type="text" name="lName" id="form3Example2" class="form-control" placeholder="Enter Your Last Name" />
                     <!-- //<label class="form-label" for="form3Example2">Last name</label> -->
                   </div>
                 </div>
@@ -48,13 +48,13 @@
   
               <!-- Email input -->
               <div class="form-outline mb-4">
-                <input type="email" id="form3Example3" class="form-control" placeholder="Enter Your Email address" />
+                <input type="email" id="form3Example3" name="email" class="form-control" placeholder="Enter Your Email address" />
                 <!-- <label class="form-label" for="form3Example3">Email address</label> -->
               </div>
   
               <!-- Password input -->
               <div class="form-outline mb-4">
-                <input type="password" id="form3Example4" class="form-control" placeholder="Enter Password"/>
+                <input type="password" id="form3Example4" name="password" class="form-control" placeholder="Enter Password"/>
                 <!-- <label class="form-label" for="form3Example4">Password</label> -->
               </div>
   
