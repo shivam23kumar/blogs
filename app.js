@@ -90,20 +90,16 @@ app.post("/register", async function(req, res){
 app.post("/signin", async function(req, res){
   const email = req.body.email;
   const password = req.body.password;
-  const userEmail = await Data.findOne({email:email})
-  try{
-    if(userEmail.password===password){
+  const userEmail = await Data.findOne({email})
+  
+    
+  if(password===userEmail.password){
       res.redirect("/");
     }
-    else{
-      res.send("Wrong Password");
-    }
+  else{
+    res.send("wrong details")
+  }
 
-  }
-  catch{
-    res.send("wrong details");
-  }
-  
 })
 
 app.get('/posts/:postId', (req, res) => {
